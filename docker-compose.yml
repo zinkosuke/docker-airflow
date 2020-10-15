@@ -1,0 +1,48 @@
+version: "3.7"
+x-refs:
+  airflowconf: &airflowconf
+    image: airflow-local:latest
+    build:
+      context: ./airflow
+    environment:
+      AIRFLOW_DB_URL: "postgres://postgres:postgres@postgres:5432/airflow_db"
+      AWS_PROFILE: ${AWS_PROFILE}
+    volumes:
+      - ${HOME}/.aws:/home/airflow/.aws
+      - ./airflow:/opt/airflow
+      - airflow-log:/var/log/airflow
+    depends_on:
+      - postgres
+services:
+  initdb:
+    <<: *airflowconf
+    command: "airflow initdb"
+    restart: on-failure
+  webserver:
+    <<: *airflowconf
+    command: "airflow webserver -p 8080"
+    restart: always
+    ports:
+      - "8080:8080"
+  scheduler_worker:
+    <<: *airflowconf
+    command: "airflow scheduler"
+    restart: always
+  postgres:
+    image: postgres:11.6-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: airflow_db
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql
+networks:
+  default:
+    name: docker-airflow-net
+volumes:
+  airflow-log:
+  pg-data:

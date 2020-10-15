@@ -1,0 +1,7 @@
+.DS_Store
+.localized
+.coverage
+.pytest_cache/
+htmlcov/
+airflow-webserver.pid
+unittests.cfg
