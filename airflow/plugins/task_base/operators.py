@@ -1,5 +1,4 @@
 from datetime import datetime
-from logging import getLogger
 from typing import Callable
 from typing import Dict
 from typing import Optional
@@ -11,8 +10,6 @@ from airflow.operators.python_operator import BranchPythonOperator
 from airflow.operators.python_operator import PythonOperator
 from airflow.operators.python_operator import ShortCircuitOperator
 from airflow.utils.trigger_rule import TriggerRule
-
-logger = getLogger(__name__)
 
 
 def dummy_operator(*, dag: DAG, task_id: str) -> DummyOperator:

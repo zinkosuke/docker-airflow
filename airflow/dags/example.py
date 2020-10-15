@@ -5,7 +5,6 @@ from task_base import operators
 from task_base.dags import default_dag_builder
 from tasks import example
 
-# DAG: >>>>>>>>>>>>>>>
 dag = default_dag_builder(
     dag_file=__file__,
     description="Dag example",
@@ -21,6 +20,14 @@ sample = operators.python_operator(
     description="sample",
     python_callable=example.task_sample,
     params={"sample": "sample"},
+)
+
+trigger = operators.python_operator(
+    dag=dag,
+    task_id="trigger",
+    description="trigger",
+    python_callable=example.task_trigger,
+    params={"trigger": "example2"},
 )
 
 branch = operators.branch_python_operator(
@@ -45,5 +52,5 @@ short = operators.short_circuit_operator(
 
 dummy3 = operators.dummy_operator(dag=dag, task_id="dummy3")
 
-# Flow: >>>>>>>>>>>>>>>
+start >> sample >> trigger
 start >> sample >> branch >> [dummy1, dummy2] >> short >> dummy3
