@@ -2,4 +2,5 @@
 set -x
 
 isort -rc .
+
 black .
