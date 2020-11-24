@@ -1,4 +1,5 @@
 from datetime import datetime
+from datetime import timedelta
 from typing import Callable
 from typing import Dict
 from typing import Optional
@@ -10,6 +11,8 @@ from airflow.operators.python_operator import BranchPythonOperator
 from airflow.operators.python_operator import PythonOperator
 from airflow.operators.python_operator import ShortCircuitOperator
 from airflow.utils.trigger_rule import TriggerRule
+
+from utils.on_failure_callback import dummy_notify
 
 
 def dummy_operator(*, dag: DAG, task_id: str) -> DummyOperator:
@@ -23,19 +26,23 @@ def __base_python_operator(
     dag: DAG,
     task_id: str,
     description: str,
-    python_callable: Callable,
-    trigger_rule: Optional[str] = None,
     params: Optional[Dict] = None,
+    execution_timeout: Optional[timedelta] = None,
+    on_failure_callback: Optional[Callable] = None,
+    trigger_rule: Optional[str] = None,
+    python_callable: Callable,
     **kwargs,
 ) -> PythonOperator:
     """"""
     t = cls(
         dag=dag,
         task_id=task_id,
+        params=(params or {}),
+        execution_timeout=(execution_timeout or timedelta(hours=1)),
+        on_failure_callback=(on_failure_callback or dummy_notify),
+        trigger_rule=(trigger_rule or TriggerRule.ALL_SUCCESS),
         provide_context=True,
         python_callable=python_callable,
-        params=(params or {}),
-        trigger_rule=(trigger_rule or TriggerRule.ALL_SUCCESS),
         **kwargs,
     )
     t.doc = description
@@ -57,12 +64,6 @@ def short_circuit_operator(*args, **kwargs) -> ShortCircuitOperator:
     return __base_python_operator(ShortCircuitOperator, **kwargs)
 
 
-def __trigger(payload: Dict, dro: TriggerDagRunOperator):
-    """"""
-    dro.payload = payload
-    return dro
-
-
 def trigger_dagrun_operator(
     *,
     dag: DAG,
@@ -72,6 +73,11 @@ def trigger_dagrun_operator(
     **kwargs,
 ) -> TriggerDagRunOperator:
     """"""
+
+    def __trigger(payload: Dict, dro: TriggerDagRunOperator):
+        dro.payload = payload
+        return dro
+
     execution_date = execution_date or datetime.now()
     t = TriggerDagRunOperator(
         dag=dag,

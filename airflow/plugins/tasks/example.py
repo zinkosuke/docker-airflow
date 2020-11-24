@@ -1,15 +1,18 @@
-from pprint import pprint
+from logging import getLogger
+from pprint import pformat
 
-from task_base import operators
+from base import operators
+
+logger = getLogger(__name__)
 
 
 def task_sample(*args, **kwargs):
-    print("args **************************************************")
-    pprint(args)
-    print("kwargs **************************************************")
-    pprint(kwargs)
-    print("kwargs.dag_run.conf **************************************************")
-    pprint(kwargs["dag_run"].conf)
+    logger.info("args **************************************************")
+    logger.info(pformat(args))
+    logger.info("kwargs **************************************************")
+    logger.info(pformat(kwargs))
+    logger.info("kwargs.dag_run.conf ******************************")
+    logger.info(pformat(getattr(kwargs.get("dag_run"), "conf", None)))
     return "sample"
 
 
@@ -19,7 +22,7 @@ def task_trigger(*args, **kwargs):
         task_id=kwargs["task_instance"].task_id,
         trigger_dag_id=kwargs["params"]["trigger"],
     )
-    pprint(t)
+    logger.info(pformat(t))
     t.execute({"parent": "example"})
 
 
@@ -29,3 +32,7 @@ def task_branch(*args, **kwargs):
 
 def task_short(*args, **kwargs):
     return False
+
+
+def task_fail(*args, **kwargs):
+    raise Exception('dummy')

@@ -1,7 +1,7 @@
 from airflow import DAG  # NOQA: F401
 
-from task_base import operators
-from task_base.dags import default_dag_builder
+from base import operators
+from base.dags import default_dag_builder
 from tasks import example
 
 dag = default_dag_builder(
