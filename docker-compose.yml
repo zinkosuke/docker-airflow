@@ -6,6 +6,7 @@ x-refs:
       context: ./airflow
     environment:
       AIRFLOW_DB_URL: "postgres://postgres:postgres@postgres:5432/airflow_db"
+      NAVBAR_COLOR: "#FF1493"
       AWS_PROFILE: ${AWS_PROFILE}
     volumes:
       - ${HOME}/.aws:/home/airflow/.aws
