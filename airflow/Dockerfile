@@ -5,8 +5,7 @@ ARG OWNER=airflow
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV AIRFLOW_HOME=/opt/airflow
 ENV AIRFLOW_LOG_DIR=/var/log/airflow
-ENV AIRFLOW_DB_URL=sqlite:////tmp/db.sqlite.airflow
-ENV AIRFLOW__CORE__EXECUTOR=LocalExecutor
+ENV AIRFLOW_DB_URL=sqlite:////tmp/sqlite.airflow.db
 
 WORKDIR ${AIRFLOW_HOME}
 
@@ -15,6 +14,7 @@ COPY . .
 RUN set -x \
  && groupadd -g 1000 ${OWNER} \
  && useradd -u 1000 -g 1000 -m -s /bin/bash ${OWNER} \
+ && chown ${OWNER}:${OWNER} ${AIRFLOW_HOME} \
  && mkdir -p ${AIRFLOW_LOG_DIR} \
  && chown -R ${OWNER}:${OWNER} ${AIRFLOW_LOG_DIR} \
  && apt-get update -yqq \
