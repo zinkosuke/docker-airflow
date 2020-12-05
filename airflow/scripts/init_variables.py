@@ -1,5 +1,11 @@
 #!/usr/bin/env python
 from airflow.models import Variable
 
-Variable.set(key="test", value="test")
-Variable.set(key="test2", value="test2")
+
+def main():
+    Variable.set(key="test", value="test")
+    Variable.set(key="test2", value="test2")
+
+
+if __name__ == "__main__":
+    main()
