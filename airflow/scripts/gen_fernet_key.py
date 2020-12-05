@@ -1,5 +1,5 @@
-"""https://airflow.readthedocs.io/en/stable/howto/secure-connections.html
-"""
+#!/usr/bin/env python
+# https://airflow.readthedocs.io/en/stable/howto/secure-connections.html
 from cryptography.fernet import Fernet
 
 

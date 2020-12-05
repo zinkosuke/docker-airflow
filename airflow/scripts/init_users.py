@@ -1,8 +1,7 @@
-"""https://airflow.apache.org/docs/apache-airflow/stable/security.html#web-authentication
-"""
+#!/usr/bin/env python
+# https://airflow.apache.org/docs/apache-airflow/stable/security.html#web-authentication
 from argparse import ArgumentParser
 
-import airflow  # NOQA: F401
 from airflow import models
 from airflow import settings
 from airflow.contrib.auth.backends.password_auth import PasswordUser

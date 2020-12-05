@@ -23,9 +23,9 @@ x-refs:
     depends_on:
       - postgres
 services:
-  initdb:
+  init:
     <<: *airflowconf
-    command: airflow initdb
+    command: ./scripts/init.sh
     restart: on-failure
   webserver:
     <<: *airflowconf
