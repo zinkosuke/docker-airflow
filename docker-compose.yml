@@ -1,3 +1,5 @@
+# AIRFLOW__CORE__EXECUTOR in (LocalExecutor, CeleryExecutor)
+# AIRFLOW__CORE__PARALLELISM = AIRFLOW__CELERY__WORKER_CONCURRENCY * (number of worker nodes)
 version: '3.7'
 x-refs:
   airflowconf: &airflowconf
@@ -8,7 +10,11 @@ x-refs:
       AIRFLOW_DB_URL: postgres://postgres:postgres@postgres:5432/airflow_db
       AWS_PROFILE: ${AWS_PROFILE}
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__CORE__PARALLELISM: 32
+      AIRFLOW__CORE__FERNET_KEY: 6POSHuBdIEDgo84mVFOVNIizisy27sNdHqlXWXUufLA=
+      AIRFLOW__WEBSERVER__SECRET_KEY: 'U\xb5\xcc\xd8\xd2\xb3q\xb2\xcd QZ\x15n\xe7\xb9'
       AIRFLOW__WEBSERVER__NAVBAR_COLOR: '#000000'
+      AIRFLOW__CELERY__WORKER_CONCURRENCY: 16
       AIRFLOW__CELERY__BROKER_URL: redis://redis:6379/1
     volumes:
       - ${HOME}/.aws:/home/airflow/.aws
@@ -17,9 +23,9 @@ x-refs:
     depends_on:
       - postgres
 services:
-  initdb:
+  init:
     <<: *airflowconf
-    command: airflow initdb
+    command: ./scripts/init.sh
     restart: on-failure
   webserver:
     <<: *airflowconf

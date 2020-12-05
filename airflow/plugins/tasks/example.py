@@ -35,4 +35,4 @@ def task_short(*args, **kwargs):
 
 
 def task_fail(*args, **kwargs):
-    raise Exception('dummy')
+    raise Exception("dummy")
