@@ -23,30 +23,6 @@ x-refs:
     depends_on:
       - postgres
 services:
-  init:
-    <<: *airflowconf
-    command: ./scripts/init.sh
-    restart: on-failure
-  webserver:
-    <<: *airflowconf
-    command: airflow webserver -p 8080
-    restart: always
-    ports:
-      - 8080:8080
-  # For LocalExecutor
-  # scheduler_worker:
-  #   <<: *airflowconf
-  #   command: airflow scheduler
-  #   restart: always
-  # For LocalExecutor
-  scheduler:
-    <<: *airflowconf
-    command: airflow scheduler
-    restart: always
-  worker:
-    <<: *airflowconf
-    command: airflow worker
-    restart: always
   postgres:
     image: postgres:11.6-alpine
     restart: always
@@ -59,11 +35,37 @@ services:
       - 5432:5432
     volumes:
       - pg-data:/var/lib/postgresql
+  init:
+    <<: *airflowconf
+    command: ./scripts/init.sh
+    restart: on-failure
+  webserver:
+    <<: *airflowconf
+    command: airflow webserver -p 8080
+    restart: always
+    ports:
+      - 8080:8080
+  # For LocalExecutor >>>
+  # scheduler_worker:
+  #   <<: *airflowconf
+  #   command: airflow scheduler
+  #   restart: always
+  # <<< For LocalExecutor
+  # For CeleryExecutor >>>
+  scheduler:
+    <<: *airflowconf
+    command: airflow scheduler
+    restart: always
+  worker:
+    <<: *airflowconf
+    command: airflow worker
+    restart: always
   redis:
     image: redis:6.0-alpine
     restart: always
     ports:
       - 6379:6379
+  # <<< For CeleryExecutor
 networks:
   default:
     name: docker-airflow-net
