@@ -3,5 +3,4 @@
 .coverage
 .pytest_cache/
 htmlcov/
-airflow-webserver.pid
 unittests.cfg

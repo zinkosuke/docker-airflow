@@ -1,6 +1,9 @@
 #!/bin/sh
-set -x
-airflow initdb
-./scripts/init_users.py admin admin@example.com admin
-./scripts/init_pools.py
-./scripts/init_variables.py
+airflow users create \
+    --username=admin \
+    --firstname=admin \
+    --lastname=admin \
+    --role=Admin \
+    --email=admin@example.com
+./scripts/_pools.py
+./scripts/_variables.py

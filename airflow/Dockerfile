@@ -1,4 +1,4 @@
-FROM python:3.8.2-slim
+FROM python:3.8-slim
 
 ARG OWNER=airflow
 
@@ -17,15 +17,9 @@ RUN set -x \
  && chown ${OWNER}:${OWNER} ${AIRFLOW_HOME} \
  && mkdir -p ${AIRFLOW_LOG_DIR} \
  && chown -R ${OWNER}:${OWNER} ${AIRFLOW_LOG_DIR} \
- && apt-get update -yqq \
- && apt-get install -y --no-install-recommends \
-        build-essential \
-        gcc \
  && pip install -U pip setuptools poetry \
  && poetry config virtualenvs.create false \
- && poetry install --no-root \
- && apt-get -y clean \
- && rm -rf /var/lib/apt/lists/*
+ && poetry install --no-root
 
 USER ${OWNER}
 EXPOSE 8080

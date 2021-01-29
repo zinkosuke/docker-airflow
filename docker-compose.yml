@@ -1,4 +1,3 @@
-# AIRFLOW__CORE__EXECUTOR in (LocalExecutor, CeleryExecutor)
 # AIRFLOW__CORE__PARALLELISM = AIRFLOW__CELERY__WORKER_CONCURRENCY * (number of worker nodes)
 version: '3.7'
 x-refs:
@@ -8,7 +7,6 @@ x-refs:
       context: ./airflow
     environment:
       AIRFLOW_DB_URL: postgres://postgres:postgres@postgres:5432/airflow_db
-      AWS_PROFILE: ${AWS_PROFILE}
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
       AIRFLOW__CORE__PARALLELISM: 32
       AIRFLOW__CORE__FERNET_KEY: 6POSHuBdIEDgo84mVFOVNIizisy27sNdHqlXWXUufLA=
@@ -16,6 +14,7 @@ x-refs:
       AIRFLOW__WEBSERVER__NAVBAR_COLOR: '#000000'
       AIRFLOW__CELERY__WORKER_CONCURRENCY: 16
       AIRFLOW__CELERY__BROKER_URL: redis://redis:6379/1
+      AWS_PROFILE: ${AWS_PROFILE}
     volumes:
       - ${HOME}/.aws:/home/airflow/.aws
       - ./airflow:/opt/airflow
@@ -23,6 +22,29 @@ x-refs:
     depends_on:
       - postgres
 services:
+  init:
+    <<: *airflowconf
+    command: airflow db init
+    restart: on-failure
+  webserver:
+    <<: *airflowconf
+    command: airflow webserver -p 8080
+    restart: always
+    ports:
+      - 8080:8080
+  scheduler:
+    <<: *airflowconf
+    command: airflow scheduler
+    restart: always
+  worker:
+    <<: *airflowconf
+    command: airflow celery worker
+    restart: always
+  redis:
+    image: redis:6.0-alpine
+    restart: always
+    ports:
+      - 6379:6379
   postgres:
     image: postgres:11.6-alpine
     restart: always
@@ -35,37 +57,6 @@ services:
       - 5432:5432
     volumes:
       - pg-data:/var/lib/postgresql
-  init:
-    <<: *airflowconf
-    command: ./scripts/init.sh
-    restart: on-failure
-  webserver:
-    <<: *airflowconf
-    command: airflow webserver -p 8080
-    restart: always
-    ports:
-      - 8080:8080
-  # For LocalExecutor >>>
-  # scheduler_worker:
-  #   <<: *airflowconf
-  #   command: airflow scheduler
-  #   restart: always
-  # <<< For LocalExecutor
-  # For CeleryExecutor >>>
-  scheduler:
-    <<: *airflowconf
-    command: airflow scheduler
-    restart: always
-  worker:
-    <<: *airflowconf
-    command: airflow worker
-    restart: always
-  redis:
-    image: redis:6.0-alpine
-    restart: always
-    ports:
-      - 6379:6379
-  # <<< For CeleryExecutor
 networks:
   default:
     name: docker-airflow-net
