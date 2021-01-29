@@ -7,13 +7,13 @@ x-refs:
       context: ./airflow
     environment:
       AIRFLOW_DB_URL: postgres://postgres:postgres@postgres:5432/airflow_db
-      AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      # AIRFLOW__CORE__EXECUTOR: CeleryExecutor
       AIRFLOW__CORE__PARALLELISM: 32
       AIRFLOW__CORE__FERNET_KEY: 6POSHuBdIEDgo84mVFOVNIizisy27sNdHqlXWXUufLA=
       AIRFLOW__WEBSERVER__SECRET_KEY: 'U\xb5\xcc\xd8\xd2\xb3q\xb2\xcd QZ\x15n\xe7\xb9'
       AIRFLOW__WEBSERVER__NAVBAR_COLOR: '#000000'
-      AIRFLOW__CELERY__WORKER_CONCURRENCY: 16
-      AIRFLOW__CELERY__BROKER_URL: redis://redis:6379/1
+      # AIRFLOW__CELERY__WORKER_CONCURRENCY: 16
+      # AIRFLOW__CELERY__BROKER_URL: redis://redis:6379/1
       AWS_PROFILE: ${AWS_PROFILE}
     volumes:
       - ${HOME}/.aws:/home/airflow/.aws
@@ -36,15 +36,15 @@ services:
     <<: *airflowconf
     command: airflow scheduler
     restart: always
-  worker:
-    <<: *airflowconf
-    command: airflow celery worker
-    restart: always
-  redis:
-    image: redis:6.0-alpine
-    restart: always
-    ports:
-      - 6379:6379
+  # worker:
+  #   <<: *airflowconf
+  #   command: airflow celery worker
+  #   restart: always
+  # redis:
+  #   image: redis:6.0-alpine
+  #   restart: always
+  #   ports:
+  #     - 6379:6379
   postgres:
     image: postgres:11.6-alpine
     restart: always
