@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# https://airflow.readthedocs.io/en/stable/howto/secure-connections.html
+# https://airflow.apache.org/docs/apache-airflow/2.0.0/security/secrets/fernet.html
 from cryptography.fernet import Fernet
 
 
