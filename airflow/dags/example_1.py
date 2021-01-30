@@ -47,7 +47,7 @@ with DAG(
     dag_id,
     default_args=default_args(),
     description="",
-    schedule_interval="10 * * * * *",
+    schedule_interval="10 * * * *",
     start_date=datetime(2021, 1, 1, tzinfo=pendulum.timezone("Asia/Tokyo")),
     catchup=False,
 ) as dag:
@@ -60,6 +60,7 @@ with DAG(
         params={},
         python_callable=task_sample,
     )
+    a.doc_md = task_sample.__doc__
 
     b = BranchPythonOperator(
         task_id="b",
