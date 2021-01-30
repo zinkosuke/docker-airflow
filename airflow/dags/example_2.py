@@ -19,10 +19,8 @@ logger = getLogger(__name__)
 
 @dag(
     default_args=default_args(),
-    description="",
     schedule_interval="10 * * * *",
     start_date=datetime(2021, 1, 1, tzinfo=pendulum.timezone("Asia/Tokyo")),
-    catchup=False,
 )
 def example_2():
     @task
