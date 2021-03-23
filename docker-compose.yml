@@ -5,6 +5,7 @@ x-refs:
     image: airflow-local:latest
     build:
       context: ./airflow
+      target: development
     environment:
       AIRFLOW_DB_URL: postgres://postgres:postgres@postgres:5432/airflow_db
       # AIRFLOW__CORE__EXECUTOR: CeleryExecutor
@@ -16,9 +17,9 @@ x-refs:
       # AIRFLOW__CELERY__BROKER_URL: redis://redis:6379/1
       AWS_PROFILE: ${AWS_PROFILE}
     volumes:
-      - ${HOME}/.aws:/home/airflow/.aws
+      - ${HOME}/.aws:/root/.aws
       - ./airflow:/opt/airflow
-      - airflow-log:/var/log/airflow
+      - airflow-log:/tmp
     depends_on:
       - postgres
 services:
