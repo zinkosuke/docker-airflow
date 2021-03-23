@@ -30,8 +30,8 @@ ENV AIRFLOW_DB_URL=sqlite:////tmp/sqlite.airflow.db
 
 COPY --from=development /usr/local/lib/python3.8/site-packages /usr/local/lib/python3.8/site-packages
 COPY --from=development /usr/local/bin/airflow /usr/local/bin/airflow
-COPY --from=development /usr/local/bin/gunicorn /usr/local/bin/gunicorn
 COPY --from=development /usr/local/bin/celery /usr/local/bin/celery
+COPY --from=development /usr/local/bin/gunicorn /usr/local/bin/gunicorn
 
 WORKDIR ${AIRFLOW_HOME}
 
