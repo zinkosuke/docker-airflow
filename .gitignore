@@ -2,4 +2,5 @@
 .localized
 .coverage
 .pytest_cache/
+config/airflow-webserver.pid
 htmlcov/

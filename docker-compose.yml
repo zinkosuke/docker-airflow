@@ -4,7 +4,7 @@ x-refs:
   airflowconf: &airflowconf
     image: airflow-local:latest
     build:
-      context: ./airflow
+      context: .
       target: development
     environment:
       AIRFLOW_DB_URL: postgres://postgres:postgres@postgres:5432/airflow_db
@@ -18,7 +18,7 @@ x-refs:
       AWS_PROFILE: ${AWS_PROFILE}
     volumes:
       - ${HOME}/.aws:/root/.aws
-      - ./airflow:/opt/airflow
+      - .:/opt
       - airflow-log:/var/log/airflow
     depends_on:
       - postgres
@@ -30,9 +30,9 @@ services:
   webserver:
     <<: *airflowconf
     command: airflow webserver -p 8080
-    restart: always
     ports:
       - 8080:8080
+    restart: always
   scheduler:
     <<: *airflowconf
     command: airflow scheduler
@@ -43,12 +43,11 @@ services:
   #   restart: always
   # redis:
   #   image: redis:6.0-alpine
-  #   restart: always
   #   ports:
   #     - 6379:6379
+  #   restart: always
   postgres:
     image: postgres:11.6-alpine
-    restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -58,6 +57,7 @@ services:
       - 5432:5432
     volumes:
       - pg-data:/var/lib/postgresql
+    restart: always
 networks:
   default:
     name: docker-airflow-net

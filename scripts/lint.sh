@@ -1,4 +1,5 @@
 #!/bin/sh
+
 path=${1:-.}
 set -x
 isort --check-only ${path}
