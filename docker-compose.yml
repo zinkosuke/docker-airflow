@@ -23,23 +23,25 @@ x-refs:
     depends_on:
       - postgres
 services:
-  init:
+  airflow:
     <<: *airflowconf
-    command: airflow db init
-    restart: on-failure
-  webserver:
-    <<: *airflowconf
-    command: airflow webserver -p 8080
+    command: ./runserver.sh single
     ports:
       - 8080:8080
     restart: always
-  scheduler:
-    <<: *airflowconf
-    command: airflow scheduler
-    restart: always
+  # webserver:
+  #   <<: *airflowconf
+  #   command: ./runserver.sh webserver
+  #   ports:
+  #     - 8080:8080
+  #   restart: always
+  # scheduler:
+  #   <<: *airflowconf
+  #   command: ./runserver.sh scheduler
+  #   restart: always
   # worker:
   #   <<: *airflowconf
-  #   command: airflow celery worker
+  #   command: ./runserver.sh worker
   #   restart: always
   # redis:
   #   image: redis:6.0-alpine
