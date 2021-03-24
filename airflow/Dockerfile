@@ -3,10 +3,10 @@
 ##################################################
 FROM python:3.8-slim as development
 
+ENV PYTHONDONTWRITEBYTECODE=1
 ENV AIRFLOW_HOME=/opt/airflow
 ENV AIRFLOW_LOG_DIR=/var/log/airflow
 ENV AIRFLOW_DB_URL=sqlite:////tmp/sqlite.airflow.db
-ENV PYTHONDONTWRITEBYTECODE=1
 
 WORKDIR ${AIRFLOW_HOME}
 

@@ -9,7 +9,7 @@ usage() {
 Usage: ./scripts/docker_build.sh [mode]
 
 Args:
-  mode: Required (default dev).'
+  mode: Build mode 'development' or 'production' (default: development).
 
 Environment variables:
   DKR_REPOSITORY: Docker repository name (default: airflow-local).
