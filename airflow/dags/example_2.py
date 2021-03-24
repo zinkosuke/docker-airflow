@@ -8,11 +8,11 @@ from logging import getLogger
 from pprint import pformat
 
 import pendulum
-from opt.default_args import default_args
-
 from airflow.decorators import dag
 from airflow.decorators import task
 from airflow.operators.python import get_current_context
+
+from opt.default_args import default_args
 
 logger = getLogger(__name__)
 

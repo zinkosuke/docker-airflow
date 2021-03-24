@@ -9,13 +9,13 @@ from logging import getLogger
 from pprint import pformat
 
 import pendulum
-from opt.default_args import default_args
-
-from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import BranchPythonOperator
 from airflow.operators.python_operator import PythonOperator
 from airflow.operators.python_operator import ShortCircuitOperator
+
+from airflow import DAG
+from opt.default_args import default_args
 
 logger = getLogger(__name__)
 dag_id, _ = os.path.splitext(os.path.basename(__file__))
