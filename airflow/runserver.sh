@@ -9,9 +9,6 @@ Commands:
   webserver: Start webserver.
   scheduler: Start scheduler.
   worker: Start worker.
-
-Environment variables:
-  DJANGO_SETTINGS_MODULE : Django settings module (required).
 EOS
     exit 1
 }
