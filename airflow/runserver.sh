@@ -16,16 +16,21 @@ EOS
     exit 1
 }
 
+init_development() {
+    airflow db init
+    airflow users create \
+        --firstname=admin --lastname=admin --role=Admin \
+        --email=admin@example.com --username=admin --password=admin
+}
+
 case "${1}" in
     single)
-        airflow db init
-        airflow users create \
-            --firstname=admin --lastname=admin --role=Admin \
-            --email=admin@example.com --username=admin --password=admin
+        init_development
         airflow scheduler &
         airflow webserver -p 8080
         ;;
     webserver)
+        [ "${2}" = "init" ] && init_development
         airflow webserver -p 8080
         ;;
     scheduler)
