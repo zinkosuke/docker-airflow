@@ -7,10 +7,6 @@
 ## Usage
 ```
 docker-compose up
-
-docker-compose exec -u root scheduler ./scripts/init.sh
-Password: xxx
-Repeat for confirmation: xxx
 ```
 
 ## Licenses
