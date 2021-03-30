@@ -12,14 +12,14 @@ Args:
   mode: Build mode 'development' or 'production' (default: development).
 
 Environment variables:
-  DKR_REPOSITORY: Docker repository name (default: airflow-local).
-  DKR_TAG       : Docker tag (default: latest).
+  DKR_REPOSITORY: Docker repository name (Set: ${DKR_REPOSITORY}).
+  DKR_TAG       : Docker tag (Set: ${DKR_TAG}).
 EOS
     exit 2
 }
 
 build_development() {
-    set -x
+    set -eux
     docker build --force-rm --no-cache --rm --target=development \
         -t ${DKR_REPOSITORY}:${DKR_TAG} .
     [ "${DKR_TAG}" = "latest" ] && exit
@@ -27,7 +27,7 @@ build_development() {
 }
 
 build_production() {
-    set -x
+    set -eux
     docker build --force-rm --no-cache --rm \
         -t ${DKR_REPOSITORY}:${DKR_TAG} .
     [ "${DKR_TAG}" = "latest" ] && exit

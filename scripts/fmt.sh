@@ -1,6 +1,6 @@
 #!/bin/sh
 
 path=${1:-.}
-set -x
+set -eux
 isort ${path}
 black ${path}

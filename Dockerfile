@@ -14,7 +14,7 @@ WORKDIR ${AIRFLOW_APP_DIR}
 COPY poetry.lock .
 COPY pyproject.toml .
 
-RUN set -x \
+RUN set -eux \
  && mkdir -p ${AIRFLOW_HOME} \
  && mkdir -p ${AIRFLOW_LOG_DIR} \
  && apt-get update -yqq \
@@ -56,7 +56,7 @@ WORKDIR ${AIRFLOW_APP_DIR}
 COPY config/ ${AIRFLOW_HOME}/
 COPY airflow/ .
 
-RUN set -x \
+RUN set -eux \
  && useradd -r -s /bin/false ${OWNER} \
  && mkdir -p ${AIRFLOW_LOG_DIR} \
  && chown -R ${OWNER} ${AIRFLOW_LOG_DIR} \
