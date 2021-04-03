@@ -1,4 +1,6 @@
 # docker-airflow
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fzinkosuke%2Fdocker-airflow.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fzinkosuke%2Fdocker-airflow?ref=badge_shield)
+
 ## Build
 ```
 ./scripts/docker_build.sh
@@ -8,6 +10,3 @@
 ```
 docker-compose up
 ```
-
-## Licenses
-FOSSA: https://app.fossa.com/reports/0c17eeba-9807-4c3e-a77c-43842446bb6b
